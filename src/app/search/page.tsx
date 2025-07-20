@@ -17,6 +17,79 @@ export default function SearchPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedNec, setSelectedNec] = useState("");
+  const [selectedTeacher, setSelectedTeacher] = useState("");
+
+  const necNames = [
+    "3D Printing",
+    "Robotics",
+    "Animation",
+    "National Service Scheme - III",
+    "National Cadet Corps - III",
+    "Games & Sports - III",
+    "Preliminary Journalism Skills",
+    "Software Development - III",
+    "SPSS For Data Analysis",
+    "Imbalance Learning",
+    "Technical Report Writing for Engineers",
+    "LT Spice Tutorial for Circuit Simulation",
+    "MATLAB Simulink",
+    "Computational Methods for Engineers using MATLAB",
+    "Basics of Campus Recruitment Training",
+    "Professional Networking & CSR",
+    "Craft practices in India",
+    "Electronics for Inventors",
+    "Computational Thinking for Problem Solving",
+    "Technical writing",
+    "Innovation: From Creativity to Entrepreneurship - III",
+    "Control System Design using MATLAB",
+    "Scientific Research Writing",
+    "Solving Problems Using Modelling and Simulation",
+    "Block Chain Technology",
+    "Internet of Things",
+    "Computer Vision AR/VR",
+    "Real Time Model Making",
+    "Hadoop Ecosystem",
+    "Basics of AutoCAD and Ansys Software",
+    "Managerial Aspect in Engineering",
+    "Indian Knowledge System",
+    "An Insight of Indian Thinker: Ancient to Modern",
+  ];
+
+  const teacherNames = [
+    "Gavendra Norkey",
+    "Karuna Markam",
+    "Amit Manjhvar",
+    "Surendra K. Chaurasia",
+    "B.P.S. Bhadoria",
+    "Anish P. Jacob",
+    "Atul Chauhan",
+    "Prachi Singh",
+    "Bhagat Singh Raghuwanshi",
+    "Minakshi",
+    "Vikas Mahor",
+    "Deepak Batham",
+    "Nitin Upadhyay",
+    "Trilok Pratap Singh",
+    "Monica Chauhan Bhadoriya",
+    "Gautam Bhadoriya",
+    "Madhav Singh",
+    "Sanjiv Sharma",
+    "Nidhi Saxena",
+    "Ankit Tiwari",
+    "Vikram Saini",
+    "Divya Chaturvedi",
+    "Kuldeep Narayan Tripathi",
+    "Vikram Rajpoot",
+    "Nookala Venu",
+    "Pawan Dubey",
+    "Hemant Shrivastava",
+    "Devesh Kumar Lal",
+    "Sharad Agrawal",
+    "Jyoti Vimal",
+    "Smita Parte",
+    "Tej Singh",
+  ];
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -36,8 +109,10 @@ export default function SearchPage() {
   // Optimize filtering with useMemo
   const filteredReviews = useMemo(() =>
     reviews.filter((r) =>
+      (selectedNec === "" || r.necName === selectedNec) &&
+      (selectedTeacher === "" || r.teacherName === selectedTeacher) &&
       r.necName.toLowerCase().includes(search.toLowerCase())
-    ), [reviews, search]
+    ), [reviews, search, selectedNec, selectedTeacher]
   );
 
   return (
@@ -47,13 +122,44 @@ export default function SearchPage() {
           <h1 className="text-3xl font-extrabold text-center text-blue-700 dark:text-blue-300 tracking-tight drop-shadow">Search Reviews</h1>
           <Link href="/" className="text-indigo-600 dark:text-indigo-400 hover:underline font-medium transition-colors">← Back to Home</Link>
         </div>
-        <input
-          type="text"
-          placeholder="Search by NEC name..."
-          className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="flex flex-col sm:flex-row gap-2 mb-2">
+          <label htmlFor="searchNec" className="sr-only">NEC Name</label>
+          <select
+            id="searchNec"
+            name="searchNec"
+            value={selectedNec}
+            onChange={e => setSelectedNec(e.target.value)}
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+          >
+            <option value="">All NECs</option>
+            {necNames.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+          <label htmlFor="searchTeacher" className="sr-only">Teacher Name</label>
+          <select
+            id="searchTeacher"
+            name="searchTeacher"
+            value={selectedTeacher}
+            onChange={e => setSelectedTeacher(e.target.value)}
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+          >
+            <option value="">All Teachers</option>
+            {teacherNames.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+          <label htmlFor="searchText" className="sr-only">Search by NEC name</label>
+          <input
+            id="searchText"
+            name="searchText"
+            type="text"
+            placeholder="Search by NEC name..."
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div className="flex flex-col gap-4">
           {loading ? (
             <div className="text-center text-gray-500 dark:text-gray-400">Loading reviews...</div>

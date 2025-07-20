@@ -30,6 +30,77 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const necNames = [
+    "3D Printing",
+    "Robotics",
+    "Animation",
+    "National Service Scheme - III",
+    "National Cadet Corps - III",
+    "Games & Sports - III",
+    "Preliminary Journalism Skills",
+    "Software Development - III",
+    "SPSS For Data Analysis",
+    "Imbalance Learning",
+    "Technical Report Writing for Engineers",
+    "LT Spice Tutorial for Circuit Simulation",
+    "MATLAB Simulink",
+    "Computational Methods for Engineers using MATLAB",
+    "Basics of Campus Recruitment Training",
+    "Professional Networking & CSR",
+    "Craft practices in India",
+    "Electronics for Inventors",
+    "Computational Thinking for Problem Solving",
+    "Technical writing",
+    "Innovation: From Creativity to Entrepreneurship - III",
+    "Control System Design using MATLAB",
+    "Scientific Research Writing",
+    "Solving Problems Using Modelling and Simulation",
+    "Block Chain Technology",
+    "Internet of Things",
+    "Computer Vision AR/VR",
+    "Real Time Model Making",
+    "Hadoop Ecosystem",
+    "Basics of AutoCAD and Ansys Software",
+    "Managerial Aspect in Engineering",
+    "Indian Knowledge System",
+    "An Insight of Indian Thinker: Ancient to Modern",
+  ];
+
+  const teacherNames = [
+    "Gavendra Norkey",
+    "Karuna Markam",
+    "Amit Manjhvar",
+    "Surendra K. Chaurasia",
+    "B.P.S. Bhadoria",
+    "Anish P. Jacob",
+    "Atul Chauhan",
+    "Prachi Singh",
+    "Bhagat Singh Raghuwanshi",
+    "Minakshi",
+    "Vikas Mahor",
+    "Deepak Batham",
+    "Nitin Upadhyay",
+    "Trilok Pratap Singh",
+    "Monica Chauhan Bhadoriya",
+    "Gautam Bhadoriya",
+    "Madhav Singh",
+    "Sanjiv Sharma",
+    "Nidhi Saxena",
+    "Ankit Tiwari",
+    "Vikram Saini",
+    "Divya Chaturvedi",
+    "Kuldeep Narayan Tripathi",
+    "Vikram Rajpoot",
+    "Nookala Venu",
+    "Pawan Dubey",
+    "Hemant Shrivastava",
+    "Devesh Kumar Lal",
+    "Sharad Agrawal",
+    "Jyoti Vimal",
+    "Smita Parte",
+    "Tej Singh",
+  ];
+
   useEffect(() => {
     const fetchReviews = async () => {
       setLoading(true);
@@ -80,26 +151,36 @@ export default function Home() {
           className="flex flex-col gap-5 border border-gray-200 dark:border-gray-700 p-4 sm:p-6 rounded-xl bg-gray-50/80 dark:bg-gray-800/80 shadow-md hover:shadow-lg transition-shadow duration-300"
         >
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700 dark:text-gray-200">NEC Name</label>
-            <input
-              type="text"
-              placeholder="e.g., DBMS"
-              className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+            <label htmlFor="necName" className="font-semibold text-gray-700 dark:text-gray-200">NEC Name</label>
+            <select
+              id="necName"
+              name="necName"
               value={necName}
-              onChange={(e) => setNecName(e.target.value)}
+              onChange={e => setNecName(e.target.value)}
               required
-            />
+              className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+            >
+              <option value="">Select NEC Name</option>
+              {necNames.map(name => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700 dark:text-gray-200">Teacher Name</label>
-            <input
-              type="text"
-              placeholder="e.g., Prof. Sharma"
-              className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+            <label htmlFor="teacherName" className="font-semibold text-gray-700 dark:text-gray-200">Teacher Name</label>
+            <select
+              id="teacherName"
+              name="teacherName"
               value={teacherName}
-              onChange={(e) => setTeacherName(e.target.value)}
+              onChange={e => setTeacherName(e.target.value)}
               required
-            />
+              className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+            >
+              <option value="">Select Teacher</option>
+              {teacherNames.map(name => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center gap-3">
             <span className="font-semibold text-gray-700 dark:text-gray-200">Rating:</span>
@@ -112,14 +193,18 @@ export default function Home() {
                   rating >= star ? "text-yellow-400 scale-110" : "text-gray-300 dark:text-gray-700"
                 } hover:text-yellow-500 focus:outline-none`}
                 aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
+                id={`rating-${star}`}
+                name="rating"
               >
                 ★
               </button>
             ))}
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700 dark:text-gray-200">Review</label>
+            <label htmlFor="review" className="font-semibold text-gray-700 dark:text-gray-200">Review</label>
             <textarea
+              id="review"
+              name="review"
               placeholder="Write your review..."
               className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[80px] dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
               value={review}
