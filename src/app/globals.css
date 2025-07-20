@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f8fafc;
   --foreground: #171717;
 }
 
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #18181b;
     --foreground: #ededed;
   }
 }
@@ -23,4 +23,29 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background 0.4s, color 0.4s;
+}
+
+input, textarea, select {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  color: #222;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark input, .dark textarea, .dark select {
+  color: #ededed;
+  background: #23272f;
+  border: 1px solid #333;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.7s cubic-bezier(0.4,0,0.2,1) both;
 }

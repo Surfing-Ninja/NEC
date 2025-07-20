@@ -34,3 +34,60 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Firebase Firestore Development Rules
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /necReviews/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+
+## Setup
+
+1. Create a `.env.local` file in the root with your Firebase config:
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDhbvXK4JzfQ8nXy15Offsouwkh0tRT6sY
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=nec-rating.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=nec-rating
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=nec-rating.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=25050409161
+NEXT_PUBLIC_FIREBASE_APP_ID=1:25050409161:web:4b850f16e2e71d67fd0518
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-CKGFQ30RKQ
+```
+
+2. Install dependencies:
+
+```
+npm install
+```
+
+3. Run locally:
+
+```
+npm run dev
+```
+
+4. Deploy to Vercel for production hosting.
+
+```
+
+```
+
+All dependencies have been successfully installed!
+
+You can now start your development server by running:
+
+```sh
+<code_block_to_apply_changes_from>
+```
+
+This will launch your NEC Rating app at [http://localhost:3000](http://localhost:3000).
+
+If you need help with the next steps or run into any issues, just let me know!
