@@ -17,7 +17,7 @@ interface Review {
   teacherName: string;
   rating: number;
   review: string;
-  timestamp: any;
+  timestamp: { seconds: number; nanoseconds: number };
 }
 
 export default function Home() {
