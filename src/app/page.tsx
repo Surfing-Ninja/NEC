@@ -10,6 +10,8 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import Link from "next/link";
+import Leaderboard from "./leaderboard/Leaderboard";
+import { useRef } from "react";
 
 interface Review {
   id: string;
@@ -29,6 +31,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
+  const [suggestionSubmitting, setSuggestionSubmitting] = useState(false);
+  const [suggestionSuccess, setSuggestionSuccess] = useState(false);
+  const suggestionRef = useRef<HTMLTextAreaElement>(null);
 
   const necNames = [
     "3D Printing",
@@ -137,6 +143,21 @@ export default function Home() {
     setSubmitting(false);
     setSuccess(true);
     setTimeout(() => setSuccess(false), 2000);
+  };
+
+  const handleSuggestionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!suggestion.trim()) return;
+    setSuggestionSubmitting(true);
+    await addDoc(collection(db, "suggestions"), {
+      suggestion,
+      timestamp: Timestamp.now(),
+    });
+    setSuggestion("");
+    setSuggestionSubmitting(false);
+    setSuggestionSuccess(true);
+    setTimeout(() => setSuggestionSuccess(false), 2000);
+    suggestionRef.current?.blur();
   };
 
   return (
@@ -250,6 +271,33 @@ export default function Home() {
               </div>
             ))
           )}
+        </div>
+        {/* Add Leaderboard below Latest Reviews */}
+        <Leaderboard topN={5} showTitle={true} compact={true} />
+        {/* Suggestion Box */}
+        <div className="w-full max-w-xl mx-auto mt-8 bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-xl p-4 sm:p-6 flex flex-col gap-4 animate-fade-in">
+          <h2 className="text-2xl font-bold text-center text-blue-700 dark:text-blue-300 mb-2">💡 Suggestion Box</h2>
+          <p className="text-center text-gray-700 dark:text-gray-200 mb-2">Have an idea or want to suggest a change for the website? Let us know below!</p>
+          <form onSubmit={handleSuggestionSubmit} className="flex flex-col gap-3">
+            <textarea
+              ref={suggestionRef}
+              className="border rounded-lg px-4 py-2 min-h-[80px] focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 transition-all"
+              placeholder="Type your suggestion here..."
+              value={suggestion}
+              onChange={e => setSuggestion(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-800 text-white rounded-lg px-6 py-2 font-bold shadow hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-800 dark:hover:to-indigo-900 transition-all duration-200 disabled:opacity-60"
+              disabled={suggestionSubmitting}
+            >
+              {suggestionSubmitting ? "Submitting..." : "Submit Suggestion"}
+            </button>
+            {suggestionSuccess && (
+              <div className="text-green-600 dark:text-green-400 text-center font-semibold animate-fade-in">Thank you for your suggestion!</div>
+            )}
+          </form>
         </div>
       </div>
     </main>
