@@ -13,6 +13,18 @@ interface Review {
   timestamp: { seconds: number; nanoseconds: number };
 }
 
+interface TeacherStats {
+  teacherName: string;
+  avgRating: number;
+  reviewCount: number;
+}
+
+const rankBadge = [
+  "bg-yellow-400 text-yellow-900", // 1st
+  "bg-gray-300 text-gray-800",    // 2nd
+  "bg-amber-700 text-amber-100",  // 3rd
+];
+
 export default function SearchPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [search, setSearch] = useState("");
@@ -115,6 +127,23 @@ export default function SearchPage() {
     ), [reviews, search, selectedNec, selectedTeacher]
   );
 
+  // Leaderboard logic
+  const leaderboard: TeacherStats[] = useMemo(() => {
+    const stats: Record<string, { sum: number; count: number }> = {};
+    reviews.forEach((r) => {
+      if (!stats[r.teacherName]) stats[r.teacherName] = { sum: 0, count: 0 };
+      stats[r.teacherName].sum += r.rating;
+      stats[r.teacherName].count += 1;
+    });
+    return Object.entries(stats)
+      .map(([teacherName, { sum, count }]) => ({
+        teacherName,
+        avgRating: sum / count,
+        reviewCount: count,
+      }))
+      .sort((a, b) => b.avgRating - a.avgRating || b.reviewCount - a.reviewCount);
+  }, [reviews]);
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-8 px-2 sm:px-4">
       <div className="w-full max-w-2xl bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-4 sm:p-8 md:p-10 flex flex-col gap-8 animate-fade-in">
@@ -187,6 +216,8 @@ export default function SearchPage() {
             ))
           )}
         </div>
+        {/* Leaderboard Section */}
+        {/* Removed leaderboard section as requested */}
       </div>
     </main>
   );
